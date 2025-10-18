@@ -897,16 +897,18 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
 
 async function sendAsGif() {
   try {
-    const gifUrl = currentGifUrl; // Your already uploaded Cloudinary GIF URL (should be set after uploading)
-    const appLink = "https://greet-diwali.vercel.app/"; // Your app link
-    const text = `🎆 I just created this animated Diwali greeting!\nMake yours here: ${appLink}`;
+    const gifUrl = currentGifUrl; // Your Cloudinary GIF URL (already uploaded)
+    // Generate link to personalized greeting page (share.html or /api/share)
+    const linkToCard = document.getElementById("shareLink").value; // Get from your share UI
 
-    // Download the GIF blob
+    const text = 
+      `🎆 I just created this animated Diwali greeting!\n` +
+      `See my card & make your own here:\n${linkToCard}`;
+
     const response = await fetch(gifUrl);
     const blob = await response.blob();
     const file = new File([blob], "diwali.gif", { type: "image/gif" });
 
-    // Web Share API: share GIF + message (works on supported mobile browsers)
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
@@ -914,7 +916,7 @@ async function sendAsGif() {
         title: "Animated Diwali Greeting"
       });
     } else {
-      alert("Your browser or device does not support sharing files directly. Please download the GIF and share manually.");
+      alert("Your device does not support sharing files directly.");
     }
   } catch (err) {
     alert("Error preparing GIF for sharing: " + err.message);
