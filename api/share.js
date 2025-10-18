@@ -28,7 +28,7 @@ export default function handler(req, res) {
     <meta name="twitter:title" content="${displayTitle} from ${displaySender}" />
     <meta name="twitter:description" content="${displayMessage}" />
     <meta name="twitter:image" content="${displayGif}" />
-    <!-- No refresh tag, or set content="7;..." for a longer delay -->
+    
   </head>
   <body style="background:#000;color:#fff;text-align:center;font-family:sans-serif;">
     <h2>Redirecting to your Diwali greeting…</h2>

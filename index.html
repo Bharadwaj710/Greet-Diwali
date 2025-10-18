@@ -978,52 +978,51 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
 
 
    async function shareVia(platform) {
-    const shareLink = document.getElementById("shareLink").value;
-    const template = templates[currentTemplate];
-    const sender = document.getElementById("senderName").value || "A Friend";
+  const shareLink = document.getElementById("shareLink").value;
+  const template = templates[currentTemplate];
+  const sender = document.getElementById("senderName").value || "A Friend";
 
-    // If the GIF is public http(s) in shareLink, we can build message with it
-    const message = `🎆 ${template.title} from ${sender}!\n\n✨ Create your own personalized Diwali card:\n${shareLink}`;
+  // Build public sharing message including the API share URL
+  const message = `🎆 ${template.title} from ${sender}!\n\n✨ Create your own personalized Diwali card:\n${shareLink}`;
 
-    // Try Web Share API with file if blob available and platform supports files
-    // This allows attaching the GIF file directly to the system share sheet (mobile)
-    if (navigator.canShare && window.currentGifUrl && navigator.canShare({ files: [] })) {
-      try {
-        // Try to fetch the blob from currentGifUrl (may be blob: or objectURL)
-        const res = await fetch(currentGifUrl);
-        const b = await res.blob();
-        const file = new File([b], 'diwali.gif', { type: b.type || 'image/gif' });
+  // Attempt Web Share API with actual GIF file (mobile native share)
+  if (navigator.canShare && window.currentGifUrl && navigator.canShare({ files: [] })) {
+    try {
+      const res = await fetch(currentGifUrl);
+      const b = await res.blob();
+      const file = new File([b], 'diwali.gif', { type: b.type || 'image/gif' });
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], title: template.title, text: message });
-          return;
-        }
-      } catch (err) {
-        console.warn('Web Share failed:', err);
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: template.title, text: message });
+        return;  // stop if native share succeeded
       }
+    } catch (err) {
+      console.warn('Web Share failed:', err);
     }
-
-    // Otherwise fallback to platform-specific share URL (text + public share link)
-    let url = "";
-    switch (platform) {
-      case "whatsapp":
-        url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        break;
-      case "telegram":
-        url = `https://t.me/share/url?url=${encodeURIComponent(shareLink)}&text=${encodeURIComponent(message)}`;
-        break;
-      case "email":
-        url = `mailto:?subject=${encodeURIComponent(template.title)}&body=${encodeURIComponent(message)}`;
-        break;
-      case "facebook":
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
-        break;
-      case "twitter":
-        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
-        break;
-    }
-    if (url) window.open(url, "_blank");
   }
+
+  // Fallback to platform-specific sharing URLs with text + share link pointing to API share endpoint
+  let url = "";
+  switch (platform) {
+    case "whatsapp":
+      // WhatsApp sharing text includes the full API share URL for OG preview
+      url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      break;
+    case "telegram":
+      url = `https://t.me/share/url?url=${encodeURIComponent(shareLink)}&text=${encodeURIComponent(message)}`;
+      break;
+    case "email":
+      url = `mailto:?subject=${encodeURIComponent(template.title)}&body=${encodeURIComponent(message)}`;
+      break;
+    case "facebook":
+      url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
+      break;
+    case "twitter":
+      url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+      break;
+  }
+  if (url) window.open(url, "_blank");
+}
 
     function copyShareLink() {
       const link = document.getElementById("shareLink").value;
@@ -1109,8 +1108,8 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
   });
 
   const baseUrl = window.location.href.split('?')[0];
-  const shareUrl = `${baseUrl.replace('diwali-card.html', 'share.html')}?${params.toString()}`;
-
+  const apiShareBase = "https://greet-diwali.vercel.app/api/share";
+const shareUrl = `${apiShareBase}?${params.toString()}`;
   shareLinkInput.value = shareUrl;
   shareSection.style.display = "block";
 }
