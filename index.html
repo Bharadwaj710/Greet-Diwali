@@ -477,6 +477,25 @@
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
       }
     }
+   @media (min-width: 650px) {
+  body, .app, .main-grid, .right-panel {
+    align-items: initial !important;
+    justify-content: initial !important;
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+  .right-panel {
+    margin: 0 auto !important;
+  }
+  /* Remove extra margin/border below image/card */
+  .gif-container, .card-preview {
+    margin-bottom: 0 !important;
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -923,7 +942,7 @@ async function sendAsGif() {
   }
 }
 
-    async function downloadGif(e) {
+   async function downloadGif(e) {
   const btn = e.target;
   btn.disabled = true;
   btn.textContent = "⏳ Generating...";
@@ -932,6 +951,25 @@ async function sendAsGif() {
     const gif = new GIF({ workers: 2, quality: 10, width: 500, height: 320 });
     const cardElement = document.getElementById("cardPreview");
 
+    // --- Begin: lock card to correct dimensions just for GIF capture ---
+    // Save any inline styles to restore later
+    const oldWidth = cardElement.style.width;
+    const oldHeight = cardElement.style.height;
+    const oldMinWidth = cardElement.style.minWidth;
+    const oldMinHeight = cardElement.style.minHeight;
+    const oldMaxWidth = cardElement.style.maxWidth;
+    const oldMaxHeight = cardElement.style.maxHeight;
+
+    cardElement.style.width = "500px";
+    cardElement.style.height = "320px";
+    cardElement.style.minWidth = "500px";
+    cardElement.style.minHeight = "320px";
+    cardElement.style.maxWidth = "500px";
+    cardElement.style.maxHeight = "320px";
+    cardElement.scrollIntoView({ block: "center", behavior: "auto" });
+    // --- End fix ---
+
+    // Now generate the frames
     for (let i = 0; i < 10; i++) {
       const canvas = await html2canvas(cardElement, { useCORS: true, scale: 1 });
       gif.addFrame(canvas, { delay: 100 });
@@ -939,20 +977,33 @@ async function sendAsGif() {
     }
 
     gif.on("finished", async (blob) => {
-  showStatus("☁️ Uploading to Cloudinary...");
-  const publicUrl = await uploadGifToCloudinary(blob);
+      // --- Restore previous card size after GIF capture ---
+      cardElement.style.width = oldWidth;
+      cardElement.style.height = oldHeight;
+      cardElement.style.minWidth = oldMinWidth;
+      cardElement.style.minHeight = oldMinHeight;
+      cardElement.style.maxWidth = oldMaxWidth;
+      cardElement.style.maxHeight = oldMaxHeight;
+      // ----------------------------------------------------
 
-  if (!publicUrl) {
-    showStatus("❌ Upload failed");
-    return;
-  }
+      showStatus("☁️ Uploading to Cloudinary...");
+      const publicUrl = await uploadGifToCloudinary(blob);
 
-  await forceDownloadFromCloudinary(publicUrl); // <-- this line fixes it
+      if (!publicUrl) {
+        showStatus("❌ Upload failed");
+        btn.disabled = false;
+        btn.textContent = "⬇️ Download GIF";
+        return;
+      }
 
-  currentGifUrl = publicUrl;
-  showShareSection(publicUrl);
-  showStatus("✅ GIF uploaded & downloaded!");
-});
+      await forceDownloadFromCloudinary(publicUrl);
+
+      currentGifUrl = publicUrl;
+      showShareSection(publicUrl);
+      showStatus("✅ GIF uploaded & downloaded!");
+      btn.disabled = false;
+      btn.textContent = "⬇️ Download GIF";
+    });
 
     gif.render();
   } catch (err) {
