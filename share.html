@@ -312,6 +312,17 @@
     }
     // ... shareOn etc, unchanged ...
     document.addEventListener("DOMContentLoaded", loadCard);
+    document.addEventListener("DOMContentLoaded", function() {
+  setTimeout(() => {
+    const notify = document.getElementById('notifyBg');
+    if (notify) {
+      notify.style.display = 'flex';
+      if (notify.querySelector('.notify-popup')) {
+        notify.querySelector('.notify-popup').focus();
+      }
+    }
+  }, 900);
+});
 
     // Legendary/Epic Card Logic
     const legendaryCards = [
