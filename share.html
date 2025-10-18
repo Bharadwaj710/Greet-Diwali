@@ -95,6 +95,14 @@
     </header>
 
     <div id="cardDisplay" class="animated-card">
+      <div style="margin-top:40px;">
+  <hr>
+  <p style="text-align: center; font-size:1.2rem;">
+    Want to create your own greeting card?
+    <br>
+    <a href="index.html" class="btn btn-primary" style="margin-top:12px;">✨ Create Your Own Card!</a>
+  </p>
+</div>
       <div class="loading">⏳ Loading your card...</div>
     </div>
 
@@ -159,16 +167,18 @@
       return div.innerHTML;
     }
 
-    function shareOn(platform) {
-  const { title, message, sender, gif } = getParams();
-  const apiShareLink = `https://greet-diwali.vercel.app/api/share?title=${encodeURIComponent(title)}&message=${encodeURIComponent(message)}&sender=${encodeURIComponent(sender)}&gif=${encodeURIComponent(gif)}`;
-  if (platform === "whatsapp") {
-    // Always share this special link for preview!
-    window.open(`https://wa.me/?text=${encodeURIComponent(apiShareLink)}`, "_blank");
-  } else if (platform === "facebook") {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(apiShareLink)}`, "_blank");
+function shareOn(platform) {
+  const params = getCardParams(); // build title, message, sender, gif from your current greeting state
+  const shareLink = `https://greet-diwali.vercel.app/share.html?title=${encodeURIComponent(params.title)}&message=${encodeURIComponent(params.message)}&sender=${encodeURIComponent(params.sender)}&gif=${encodeURIComponent(params.gif)}`;
+
+  let shareText = `View your animated greeting card here: ${shareLink}\n\nWant to create your own? Go to https://greet-diwali.vercel.app/index.html`;
+
+  if (platform === 'whatsapp') {
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
+  } else if (platform === 'facebook') {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`, "_blank");
   }
-  // ...etc for other platforms
+  // Same pattern for Telegram/Email etc.
 }
 
     function shareThisCard() { shareOn("whatsapp"); }
