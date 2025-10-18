@@ -6,9 +6,9 @@ export default function handler(req, res) {
   const displaySender = sender || "A Friend";
   const displayGif = gif || "https://res.cloudinary.com/your-default-gif.gif";
 
-  const appLink = "https://greet-diwali.vercel.app/";
-  const cardLink = `${appLink}?title=${encodeURIComponent(displayTitle)}&message=${encodeURIComponent(displayMessage)}&sender=${encodeURIComponent(displaySender)}&gif=${encodeURIComponent(displayGif)}`;
+  const appLink = "https://greet-diwali.vercel.app/index.html";
 
+  // Render the personalized greeting card inline:
   const html = `
   <!DOCTYPE html>
   <html lang="en">
@@ -19,20 +19,34 @@ export default function handler(req, res) {
     <meta property="og:title" content="${displayTitle} from ${displaySender}" />
     <meta property="og:description" content="${displayMessage}" />
     <meta property="og:image" content="${displayGif}" />
-    <meta property="og:image:type" content="image/gif" />
-    <meta property="og:image:width" content="600" />
-    <meta property="og:image:height" content="400" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="${cardLink}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${displayTitle} from ${displaySender}" />
     <meta name="twitter:description" content="${displayMessage}" />
     <meta name="twitter:image" content="${displayGif}" />
-    
+    <style>
+      body { background:#0b1020; color:#fff; font-family:sans-serif; text-align:center; padding:2vw; }
+      .card { max-width:550px; margin:auto; background:rgba(255,255,255,0.04); border-radius:18px; padding:40px 20px; }
+      .card img { max-width:97%; border-radius:14px; margin-bottom:28px; box-shadow:0 14px 60px #ffcc3322; }
+      .card-title { font-size:2.2rem; color:#ffcc33; font-weight:800; margin-bottom:10px; }
+      .card-message { font-size:1.2rem; margin-bottom:18px; line-height:1.6; }
+      .card-sender { font-size:1rem; color:#ffcc33; opacity:0.8; margin-bottom:20px; }
+      .cta { margin-top:40px; }
+      .cta-btn { display:inline-block; margin-top:10px; padding:13px 33px; background:#ffcc33; color:#181818; font-size:1.2rem; border-radius:10px; text-decoration:none; font-weight:700; }
+    </style>
   </head>
-  <body style="background:#000;color:#fff;text-align:center;font-family:sans-serif;">
-    <h2>Redirecting to your Diwali greeting…</h2>
-    <p>If not redirected, <a href="${cardLink}" style="color:#ffcc33;">click here</a>.</p>
+  <body>
+    <div class="card">
+      <img src="${displayGif}" alt="Diwali Greeting Animation" />
+      <div class="card-title">${displayTitle}</div>
+      <div class="card-message">${displayMessage}</div>
+      <div class="card-sender">— ${displaySender}</div>
+    </div>
+    <div class="cta">
+      <hr>
+      <p>Want to create your own animated greeting?</p>
+      <a href="${appLink}" class="cta-btn">✨ Create Your Own Card!</a>
+    </div>
   </body>
   </html>
   `;
