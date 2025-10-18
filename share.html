@@ -162,18 +162,14 @@
     function shareOn(platform) {
       const { title, sender, gif } = getParams();
       const appLink = "https://greet-diwali.vercel.app/";
-      const cardLink = window.location.href;
+      const apiShareLink = `https://greet-diwali.vercel.app/api/share?title=${encodeURIComponent(title)}&message=${encodeURIComponent(message)}&sender=${encodeURIComponent(sender)}&gif=${encodeURIComponent(gif)}`;
       const textMessage = `${title} from ${sender}!\n\n🎇 Check out this animated Diwali greeting!\n${gif}\n\n✨ Create your own personalized card here:\n${appLink}`;
 
       if (platform === "whatsapp") {
-        window.open(`https://wa.me/?text=${encodeURIComponent(textMessage)}`, "_blank");
-      } else if (platform === "telegram") {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(cardLink)}&text=${encodeURIComponent(textMessage)}`, "_blank");
-      } else if (platform === "email") {
-        window.open(`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(textMessage)}`, "_blank");
-      } else if (platform === "facebook") {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(cardLink)}`, "_blank");
-      }
+  window.open(`https://wa.me/?text=${encodeURIComponent(`🎆 ${title} from ${sender}!\n\n✨ Create your own personalized Diwali card:\n${apiShareLink}`)}`, "_blank");
+} else if (platform === "facebook") {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(apiShareLink)}`, "_blank");
+}
     }
 
     function shareThisCard() { shareOn("whatsapp"); }
