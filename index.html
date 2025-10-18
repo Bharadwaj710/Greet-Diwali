@@ -1010,34 +1010,19 @@ async function sendAsGif() {
 
 
    async function shareVia(platform) {
-  const shareLink = document.getElementById("shareLink").value;
+  const shareLink = document.getElementById("shareLink").value; // The personalized greeting URL
   const template = templates[currentTemplate];
   const sender = document.getElementById("senderName").value || "A Friend";
 
-  // Build public sharing message including the API share URL
-  const message = `🎆 ${template.title} from ${sender}!\n\n✨ Create your own personalized Diwali card:\n${shareLink}`;
+  // Compose message with greeting card link and CTA for creating own card
+  const message = `🎆 ${template.title} from ${sender}!\n\n` +
+                  `View animated greeting card here: ${shareLink}\n\n` +
+                  `Want to create your own? Visit: https://greet-diwali.vercel.app/index.html`;
 
-  // Attempt Web Share API with actual GIF file (mobile native share)
-  if (navigator.canShare && window.currentGifUrl && navigator.canShare({ files: [] })) {
-    try {
-      const res = await fetch(currentGifUrl);
-      const b = await res.blob();
-      const file = new File([b], 'diwali.gif', { type: b.type || 'image/gif' });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: template.title, text: message });
-        return;  // stop if native share succeeded
-      }
-    } catch (err) {
-      console.warn('Web Share failed:', err);
-    }
-  }
-
-  // Fallback to platform-specific sharing URLs with text + share link pointing to API share endpoint
+  // Fallback platform sharing URLs
   let url = "";
   switch (platform) {
     case "whatsapp":
-      // WhatsApp sharing text includes the full API share URL for OG preview
       url = `https://wa.me/?text=${encodeURIComponent(message)}`;
       break;
     case "telegram":
@@ -1047,13 +1032,17 @@ async function sendAsGif() {
       url = `mailto:?subject=${encodeURIComponent(template.title)}&body=${encodeURIComponent(message)}`;
       break;
     case "facebook":
+      // Facebook sharing only accepts URLs, so share the personalized greeting card link directly
       url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
       break;
     case "twitter":
       url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
       break;
   }
-  if (url) window.open(url, "_blank");  
+
+  if (url) {
+    window.open(url, "_blank");
+  }
 }
 
     function copyShareLink() {
