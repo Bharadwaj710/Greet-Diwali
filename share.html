@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title id="pageTitle">Diwali Greeting 🎆 - Personalized Card</title>
-  <meta name="description" content="Check out this beautiful Diwali greeting card!" />
-  <meta property="og:title" content="Happy Diwali 🎆" />
-  <meta property="og:description" content="A beautiful personalized Diwali greeting just for you!" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="" id="ogImage" />
-  <meta property="og:image:type" content="image/gif" />
-  <meta property="og:image:width" content="600" />
-  <meta property="og:image:height" content="400" />
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:title" content="Happy Diwali 🎆" />
-  <meta property="twitter:description" content="A beautiful personalized Diwali greeting just for you!" />
-  <meta property="twitter:image" content="" id="twitterImage" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title id="pageTitle">Diwali Greeting 🎆 - Personalized Card</title>
+<meta name="description" content="Check out this beautiful Diwali greeting card!" />
+<meta property="og:title" content="Happy Diwali 🎆" />
+<meta property="og:description" content="A beautiful personalized Diwali greeting just for you!" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="" id="ogImage" />
+<meta property="og:image:type" content="image/gif" />
+<meta property="og:image:width" content="600" />
+<meta property="og:image:height" content="400" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Happy Diwali 🎆" />
+<meta property="twitter:description" content="A beautiful personalized Diwali greeting just for you!" />
+<meta property="twitter:image" content="" id="twitterImage" />
   <style>
     /* ...your previous Diwali card styles... */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -244,209 +244,165 @@
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <header>
-      <div class="emoji-bounce">🎆 ✨ 🎇</div>
-      <h1>Happy Diwali!</h1>
-      <p id="greeting">A beautiful greeting just for you</p>
-      <p class="subtitle">From a friend who cares ❤️</p>
-    </header>
-    <div id="cardDisplay" class="animated-card"></div>
-    <div id="legendCardReveal"></div>
-    <div class="cta-container">
-      <span class="cta-emoji">🎨</span>
-      <h2 class="cta-title">Create Your Own Card!</h2>
-      <p class="cta-text">
-        Don't just receive greetings — create beautiful personalized Diwali cards with animations and share them with everyone you care about!
-      </p>
-      <div class="button-group">
-        <a href="./index.html" class="btn btn-primary">✨ Create Card</a>
-        <button class="btn btn-secondary" onclick="shareThisCard()">📤 Share This Card</button>
-      </div>
-      <label class="share-label">Share via:</label>
-      <div class="share-buttons">
-        <button class="share-btn" onclick="shareOn('whatsapp')">💬 WhatsApp</button>
-        <button class="share-btn" onclick="shareOn('telegram')">✈️ Telegram</button>
-        <button class="share-btn" onclick="shareOn('email')">📧 Email</button>
-        <button class="share-btn" onclick="shareOn('facebook')">👍 Facebook</button>
-        <button class="share-btn" onclick="copyCurrentLink()">📋 Copy Link</button>
-      </div>
-    </div>
-  </div>
-  <div id="toast" class="toast"></div>
-  <div class="modal-bg" id="modalBg" tabindex="-1"></div>
-  <script>
-    function getParams() {
-      const params = new URLSearchParams(window.location.search);
-      return {
-        title: params.get("title") || "Happy Diwali 🎆",
-        message: params.get("message") || "Wishing you a bright and joyous Diwali!",
-        sender: params.get("sender") || "A Friend",
-        gif: params.get("gif") || null
-      };
-    }
-    function loadCard() {
-      const params = getParams();
-      document.getElementById("pageTitle").textContent = `${params.title} 🎆`;
-      document.querySelector('meta[property="og:title"]').setAttribute("content", params.title);
-      document.querySelector('meta[property="og:description"]').setAttribute("content", params.message);
-      document.querySelector('#ogImage').setAttribute("content", params.gif);
-      document.querySelector('#twitterImage').setAttribute("content", params.gif);
-      document.getElementById("greeting").textContent = `A beautiful greeting from ${params.sender}`;
-      const html = `
-        <div class="gif-container">
-          <img src="${params.gif}" alt="Diwali Greeting Card" />
-        </div>
-        <div class="card-details">
-          <div class="card-title">${escapeHtml(params.title)}</div>
-          <div class="card-message">${escapeHtml(params.message)}</div>
-          <div class="card-sender">— ${escapeHtml(params.sender)}</div>
-        </div>`;
-      document.getElementById("cardDisplay").innerHTML = html;
-      //setTimeout(revealLegendaryCard, 600);
-    }
-    function escapeHtml(text) {
-      const div = document.createElement("div");
-      div.textContent = text;
-      return div.innerHTML;
-    }
-    // ... shareOn etc, unchanged ...
-    document.addEventListener("DOMContentLoaded", loadCard);
-    document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(() => {
-    const notify = document.getElementById('notifyBg');
-    if (notify) {
-      notify.style.display = 'flex';
-      if (notify.querySelector('.notify-popup')) {
-        notify.querySelector('.notify-popup').focus();
-      }
-    }
-  }, 900);
-});
-
-    // Legendary/Epic Card Logic
-    const legendaryCards = [
-      { name: "Lord Rama", rarity: "Legendary", color: "gold", img: "/assets/pixels/rama.png", desc: "Seventh avatar of Vishnu. The hero of the Ramayana, embodies virtue and dharma." },
-      { name: "Sita", rarity: "Legendary", color: "gold", img: "/assets/pixels/sita.png", desc: "Consort of Lord Rama, a legend of purity, nobility, and devotion." },
-      { name: "Ravan", rarity: "Legendary", color: "gold", img: "/assets/pixels/ravan.png", desc: "King of Lanka, famed antagonist of Ramayana, symbol of mastery but also ego." },
-      { name: "Hanuman", rarity: "Epic", color: "purple", img: "/assets/pixels/hanuman.png", desc: "Devout follower of Rama, famed for immense strength, courage, and loyalty." },
-      { name: "Lakshmana", rarity: "Epic", color: "purple", img: "/assets/pixels/lakshmana.png", desc: "Devoted brother to Rama, known for selfless service and valor." },
-    ];
-    function revealLegendaryCard() {
-      // pick random every time for demo; for per-user lock, use localStorage logic
-      const card = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
-      showLegendaryCard(card);
-    }
-    function showLegendaryCard(card) {
-      const revealDiv = document.getElementById('legendCardReveal');
-      revealDiv.innerHTML = `
-        <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)">
-          <div class="card-rarity">${card.rarity}</div>
-          <img class="pixel-img" src="${card.img}" />
-          <div class="card-name">${card.name}</div>
-          <div class="card-desc">${card.desc}</div>
-          <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
-        </div>
-      `;
-    }
-    let unlockedCard = null;
-
-// Show notification on first page load
-window.onload = function() {
-  setTimeout(() => {
-    document.getElementById('notifyBg').style.display = 'flex';
-    document.querySelector('.notify-popup').focus();
-  }, 900); // after the card loads
-};
-
-function startCardUnlock() {
-  const notifyBg = document.getElementById('notifyBg');
-  notifyBg.innerHTML = `
-    <div class="notify-popup">
-      <div class="card-loader-spin"></div>
-      <div style="font-size:1.08em;margin-top:17px;">Unlocking your character...</div>
-    </div>
-  `;
-  setTimeout(() => {
-    unlockedCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
-    notifyBg.style.display = "none";
-    showLegendaryCard(unlockedCard, true); // Show modal
-  }, 1250);
-}
-
-// Update showLegendaryCard to accept isPopup param:
-function showLegendaryCard(card, isPopup) {
-  const revealDiv = document.getElementById('legendCardReveal');
-  revealDiv.innerHTML = `
-    <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)">
-      <div class="card-rarity">${card.rarity}</div>
-      <img class="pixel-img" src="${card.img}" />
-      <div class="card-name">${card.name}</div>
-      <div class="card-desc">${card.desc}</div>
-
-    </div>
-  `;
-  // If isPopup trigger, open it (tiny delay ensures node ready)
-  if (isPopup) setTimeout(() => popupCardManual(card), 50);
-}
-
-// Use popupCardManual (as already present) for modal opening
-
-// popupCard function updated:
-function popupCard(event) {
-  if (unlockedCard) popupCardManual(unlockedCard);
-}
-
-    // Popup logic
-    function popupCard(event) {
-      event.stopPropagation();
-      const card = event.currentTarget.cloneNode(true);
-      card.classList.add('modal-card-popup');
-      card.removeAttribute('onclick');
-      // close card button
-      const closeBtn = document.createElement('button');
-      closeBtn.className = 'modal-close-btn';
-      closeBtn.innerHTML = '×';
-      closeBtn.onclick = closeCardPopup;
-      // modal background
-      const modal = document.getElementById('modalBg');
-      modal.innerHTML = '';
-      modal.appendChild(card);
-      modal.appendChild(closeBtn);
-      modal.classList.add('active');
-      card.focus();
-      document.body.style.overflow = 'hidden';
-      modal.onclick = function(e) {
-        if (e.target === modal) closeCardPopup();
-      };
-      document.onkeydown = function(e) {
-        if (e.key === "Escape") closeCardPopup();
-      };
-    }
-    function closeCardPopup() {
-      const modal = document.getElementById('modalBg');
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-      modal.innerHTML = '';
-      document.onkeydown = null;
-    }
-    function downloadCard() {
-      html2canvas(document.querySelector('.legendary-card')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = "legendary_card.png";
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <div class="notify-bg" id="notifyBg" style="display:none;">
+<div class="wrapper">
+  <header>
+    <div class="emoji-bounce">🎆 ✨ 🎇</div>
+    <h1>Happy Diwali!</h1>
+    <p id="greeting">A beautiful greeting from a friend</p>
+  </header>
+  <div class="gif-container" id="gifContainer"></div>
+  <div class="card-details" id="cardDetails"></div>
+</div>
+<div class="notify-bg" id="notifyBg">
   <div class="notify-popup" tabindex="0">
     🎉 You unlocked a special character!
     <button class="notify-popup-btn" onclick="startCardUnlock()">Show my card</button>
   </div>
 </div>
 
+<div class="modal-bg" id="modalBg" tabindex="-1"></div>
+
+<script>
+// Data
+const legendaryCards = [
+  { name: "Lord Rama", rarity: "Legendary", color: "gold", img: "/assets/pixels/rama.png", desc: "Seventh avatar of Vishnu. The hero of the Ramayana, embodies virtue and dharma." },
+  { name: "Sita", rarity: "Legendary", color: "gold", img: "/assets/pixels/sita.png", desc: "Consort of Lord Rama, a legend of purity, nobility, and devotion." },
+  { name: "Ravan", rarity: "Legendary", color: "gold", img: "/assets/pixels/ravan.png", desc: "King of Lanka, famed antagonist of Ramayana, symbol of mastery but also ego." },
+  { name: "Hanuman", rarity: "Epic", color: "purple", img: "/assets/pixels/hanuman.png", desc: "Devout follower of Rama, famed for immense strength, courage, and loyalty." },
+  { name: "Lakshmana", rarity: "Epic", color: "purple", img: "/assets/pixels/lakshmana.png", desc: "Devoted brother to Rama, known for selfless service and valor." }
+];
+
+function getParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    title: params.get("title") || "Happy Diwali 🎆",
+    message: params.get("message") || "Wishing you a bright and joyous Diwali!",
+    sender: params.get("sender") || "A Friend",
+    gif: params.get("gif") || null
+  };
+}
+
+function loadCard() {
+  const params = getParams();
+  document.getElementById("pageTitle").textContent = `${params.title} 🎆`;
+  document.querySelector('meta[property="og:title"]').setAttribute("content", params.title);
+  document.querySelector('meta[property="og:description"]').setAttribute("content", params.message);
+  document.querySelector('#ogImage').setAttribute("content", params.gif);
+  document.querySelector('#twitterImage').setAttribute("content", params.gif);
+  document.getElementById("greeting").textContent = `A beautiful greeting from ${params.sender}`;
+  document.getElementById("gifContainer").innerHTML = params.gif ? `<img src="${params.gif}" alt="Diwali Greeting GIF" style="border-radius:12px; width:100%;">` : "";
+  document.getElementById("cardDetails").innerHTML = `
+    <div class="card-title">${escapeHtml(params.title)}</div>
+    <div class="card-message">${escapeHtml(params.message)}</div>
+    <div class="card-sender">— ${escapeHtml(params.sender)}</div>
+  `;
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Show notification after load
+document.addEventListener("DOMContentLoaded", () => {
+  loadCard();
+  setTimeout(() => {
+    const notify = document.getElementById('notifyBg');
+    if (notify) {
+      notify.style.display = 'flex';
+      notify.querySelector('.notify-popup').focus();
+    }
+  }, 900);
+});
+
+// Notification unlock handler & card popup display
+let unlockedCard = null;
+
+function startCardUnlock() {
+  const notifyBg = document.getElementById('notifyBg');
+  notifyBg.innerHTML = `
+    <div class="notify-popup">
+      <div class="card-loader-spin"></div>
+      <div style="font-size:1.2em; margin-top: 16px;">Unlocking your character...</div>
+    </div>
+  `;
+  setTimeout(() => {
+    unlockedCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
+    notifyBg.style.display = "none";
+    showLegendaryCard(unlockedCard, true);
+  }, 1200);
+}
+
+function showLegendaryCard(card, isPopup) {
+  const gifContainer = document.getElementById('gifContainer');
+  gifContainer.innerHTML += `
+    <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)" style="margin-top:20px;">
+      <div class="card-rarity">${card.rarity}</div>
+      <img class="pixel-img" src="${card.img}" />
+      <div class="card-name">${card.name}</div>
+      <div class="card-desc">${card.desc}</div>
+      <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
+    </div>
+  `;
+  if (isPopup) setTimeout(() => popupCardManual(card), 100);
+}
+
+function popupCardManual(cardobj) {
+  const cardDiv = document.createElement('div');
+  cardDiv.className = `legendary-card modal-card-popup card-${cardobj.color}`;
+  cardDiv.innerHTML = `
+    <div class="card-rarity">${cardobj.rarity}</div>
+    <img class="pixel-img" src="${cardobj.img}" />
+    <div class="card-name">${cardobj.name}</div>
+    <div class="card-desc">${cardobj.desc}</div>
+    <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
+  `;
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'modal-close-btn';
+  closeBtn.innerHTML = '×';
+  closeBtn.onclick = closeCardPopup;
+
+  const modal = document.getElementById('modalBg');
+  modal.innerHTML = '';
+  modal.appendChild(cardDiv);
+  modal.appendChild(closeBtn);
+  modal.classList.add('active');
+  cardDiv.focus();
+  document.body.style.overflow = 'hidden';
+
+  modal.onclick = function(e) {
+    if (e.target === modal) closeCardPopup();
+  };
+
+  document.onkeydown = function(e) {
+    if (e.key === "Escape") closeCardPopup();
+  };
+}
+
+function popupCard(event) {
+  if (unlockedCard) popupCardManual(unlockedCard);
+}
+
+function closeCardPopup() {
+  const modal = document.getElementById('modalBg');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+  modal.innerHTML = '';
+  document.onkeydown = null;
+}
+
+function downloadCard() {
+  html2canvas(document.querySelector('.legendary-card')).then(canvas => {
+    const link = document.createElement('a');
+    link.download = "legendary_card.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
