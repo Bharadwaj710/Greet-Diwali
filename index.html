@@ -954,8 +954,8 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
     });
 
     const baseUrl = window.location.href.split('?')[0];
-    const shareUrl = `${baseUrl.replace('diwali-card.html', 'share.html')}?${params.toString()}`;
-
+   const shareUrl = `https://greet-diwali.vercel.app/api/share?title=${encodeURIComponent(title)}&message=${encodeURIComponent(message)}&sender=${encodeURIComponent(sender)}&gif=${encodeURIComponent(gifUrl)}`;
+  //const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`🎆 ${title} from ${sender}!\n\n✨ Create your own personalized Diwali card:\n${shareUrl}`)}`;
     shareLinkInput.value = shareUrl;
     shareSection.style.display = "block";
     shareSection.scrollIntoView({ behavior: "smooth" });
