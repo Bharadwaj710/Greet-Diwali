@@ -16,9 +16,9 @@
   <meta property="twitter:title" content="Happy Diwali 🎆" />
   <meta property="twitter:description" content="A beautiful personalized Diwali greeting just for you!" />
   <meta property="twitter:image" content="" id="twitterImage" />
-
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ...your previous Diwali card styles... */
+* { margin: 0; padding: 0; box-sizing: border-box; }
     :root { --primary: #ffcc33; --primary-dark: #ff6f61; --bg: #0b1020; --bg-light: #071025; }
     html, body {
       width: 100%; height: 100%;
@@ -83,6 +83,164 @@
     }
     .toast.show { display: block; }
     @keyframes fadeInUp { from { opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+
+    /* Legendary/Epic Card Styles */
+    .legendary-card {
+      position: relative;
+      width: 220px;
+      height: 320px;
+      margin: 40px auto 12px auto;
+      border-radius: 15px;
+      box-shadow: 0 0 18px 5px #EAC43555, 0 0 2px #FFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'VT323', monospace;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .23s;
+      z-index: 11;
+      animation: holoGlow 2.5s infinite alternate;
+    }
+    .card-gold { background: linear-gradient(135deg, gold, gold 60%, #ffe3d9, #fff6d9, #ffc3b8 95%); }
+    .card-purple { background: linear-gradient(135deg, #772ebd, #9600d8, #bf69cc 75%, #320a46 100%); }
+    .legendary-card:hover, .legendary-card:focus-visible {
+      transform: scale(1.04) rotate(-2deg);
+      box-shadow: 0 0 28px 12px #FFD700, 0 0 44px #EAC43555;
+      filter: drop-shadow(0 0 8px #ebe9ff);
+      animation: cardWiggle 0.8s;
+      outline: none;
+    }
+    @keyframes holoGlow {
+      0% { filter: brightness(1) drop-shadow(0 0 10px gold);}
+      100% { filter: brightness(1.35) drop-shadow(0 0 25px #ff79c6);}
+    }
+    @keyframes cardWiggle {
+      0% { transform: scale(1.04) rotate(-2deg);}
+      20% { transform: scale(1.07) rotate(2deg);}
+      50% { transform: scale(1.08) rotate(-1deg);}
+      70% { transform: scale(1.06) rotate(1deg);}
+      100% { transform: scale(1.04) rotate(-2deg);}
+    }
+    .legendary-card::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 17px;
+      background: linear-gradient(120deg, rgb(145, 131, 52), transparent 50%, gold);
+      opacity: 0.18;
+      z-index: 0;
+      animation: rainbowShine 3s linear infinite;
+    }
+    .card-purple::before {
+      background: linear-gradient(110deg, #e79ffa 4%, #6600cc 75%, #f6e8ff 95%);
+      opacity: .25;
+    }
+    @keyframes rainbowShine { to { filter: hue-rotate(360deg);} }
+    .pixel-img {
+      width: 120px;
+      height: 120px;
+      margin: 22px 0 12px 0;
+      z-index: 1;
+      image-rendering: pixelated;
+    }
+    .card-name { font-size: 1.2rem; color: #fff; font-weight: bold; margin: 8px 0;
+  z-index: 1; letter-spacing: 1.5px; text-shadow: 0 0 10px #222;}
+    .card-purple .card-name { color: #e6c4ff; }
+    .card-desc { font-size: 0.88rem; color: #fff; text-align: center; margin: 10px 15px 0 15px; z-index: 1; text-shadow: 0 0 4px #111;}
+    .card-rarity {
+      position: absolute; left: 10px; top: 10px;
+      color: #fff; font-size: 0.99em;
+      letter-spacing: 1.4px; text-shadow: 0 0 7px #ffd700, 1px 1px 2px #000;
+      z-index: 2;
+    }
+    .card-purple .card-rarity {
+      color: #e0ceff; text-shadow: 0 0 8px #d900ff, 1px 1px 3px #22003b;
+    }
+    .legendary-card button {
+      margin: 18px auto 0 auto;
+      padding: 7px 26px;
+      font-family: inherit;
+      font-size: 1.07em;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(120deg, #fffbbb, #ffd036 55%, #ffadfa 100%);
+      color: #563705;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #fff8, 0 0 2px #fff3;
+      transition: background .18s;
+    }
+    .card-purple button {
+      background: linear-gradient(110deg, #d7b9fa, #ae7deb 70%, #ffadfa 100%);
+      color: #390047;
+    }
+
+    /* Modal Styles */
+    .modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgb(20, 8, 50); /* fully opaque background */
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: modalBgFade 0.17s;
+}
+    .modal-bg.active { display: flex;}
+    .modal-card-popup {
+      animation: modalPop 0.21s cubic-bezier(.47,1.38,.6,1.11);
+      filter: drop-shadow(0 0 22px #ffd700a8);
+      outline: none;
+      background: none;
+    }
+    @keyframes modalPop { from { transform: scale(0.7); opacity: 0;} to{transform:scale(1);opacity:1;} }
+    @keyframes modalBgFade { from{opacity:.2;} to {opacity:1;}}
+    .modal-close-btn {
+      position: absolute;
+      top: 23px; right: 28px;
+      background: rgba(25,12,23,0.95);
+      color: #ffd700;
+      border: none; border-radius: 100%;
+      font-size: 2.1em; z-index: 10;
+      width: 41px; height: 41px;
+      box-shadow: 0 0 8px #fffa;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .modal-close-btn:hover {
+      background: #ffd700;
+      color: #320a46;
+      box-shadow: 0 0 14px #ffd;
+    }
+    /* Notification Styles */
+.notify-bg {
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(32,12,48,0.8); display: flex; align-items: center; justify-content: center; animation: notifyFade .19s;
+}
+@keyframes notifyFade { from { opacity:0; } to { opacity:1; } }
+.notify-popup {
+  background: linear-gradient(90deg, #ffd700 60%, #ffe3d9 100%);
+  color: #4e3806; font-weight: 700; font-size: 1.16em;
+  border-radius: 14px; padding: 30px 36px; min-width:220px; min-height:80px;
+  box-shadow: 0 9px 42px #ffd966b0, 0 0 8px #fff8;
+  display: flex; flex-direction:column; align-items:center; justify-content:center;
+  animation: modalPop .25s cubic-bezier(.47,1.38,.6,1.11); cursor:pointer;
+}
+.notify-popup:hover { filter:brightness(1.07); }
+.notify-popup-btn {
+  margin-top: 18px; background: #fffdd9; border-radius: 8px; color: #b88a00; font-weight:700; font-size:1em;
+  border:none; padding:8px 28px; cursor:pointer; box-shadow:0 2px 8px #ffd8;
+}
+.card-loader-spin {
+  width:60px;height:60px;
+  border-radius:50%;border:7px solid #ffd700; border-top:7px solid #f7b40a;
+  animation: spinLoader 1.05s linear infinite; margin:21px auto;
+  box-shadow: 0 2px 12px #ffd7008e;
+}
+@keyframes spinLoader { to { transform: rotate(360deg);} }
+
   </style>
 </head>
 <body>
@@ -93,19 +251,8 @@
       <p id="greeting">A beautiful greeting just for you</p>
       <p class="subtitle">From a friend who cares ❤️</p>
     </header>
-
-    <div id="cardDisplay" class="animated-card">
-      <div style="margin-top:40px;">
-  <hr>
-  <p style="text-align: center; font-size:1.2rem;">
-    Want to create your own greeting card?
-    <br>
-    <a href="index.html" class="btn btn-primary" style="margin-top:12px;">✨ Create Your Own Card!</a>
-  </p>
-</div>
-      <div class="loading">⏳ Loading your card...</div>
-    </div>
-
+    <div id="cardDisplay" class="animated-card"></div>
+    <div id="legendCardReveal"></div>
     <div class="cta-container">
       <span class="cta-emoji">🎨</span>
       <h2 class="cta-title">Create Your Own Card!</h2>
@@ -116,7 +263,6 @@
         <a href="./index.html" class="btn btn-primary">✨ Create Card</a>
         <button class="btn btn-secondary" onclick="shareThisCard()">📤 Share This Card</button>
       </div>
-
       <label class="share-label">Share via:</label>
       <div class="share-buttons">
         <button class="share-btn" onclick="shareOn('whatsapp')">💬 WhatsApp</button>
@@ -127,9 +273,8 @@
       </div>
     </div>
   </div>
-
   <div id="toast" class="toast"></div>
-
+  <div class="modal-bg" id="modalBg" tabindex="-1"></div>
   <script>
     function getParams() {
       const params = new URLSearchParams(window.location.search);
@@ -140,7 +285,6 @@
         gif: params.get("gif") || null
       };
     }
-
     function loadCard() {
       const params = getParams();
       document.getElementById("pageTitle").textContent = `${params.title} 🎆`;
@@ -159,44 +303,139 @@
           <div class="card-sender">— ${escapeHtml(params.sender)}</div>
         </div>`;
       document.getElementById("cardDisplay").innerHTML = html;
+      //setTimeout(revealLegendaryCard, 600);
     }
-
     function escapeHtml(text) {
       const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     }
+    // ... shareOn etc, unchanged ...
+    document.addEventListener("DOMContentLoaded", loadCard);
 
-function shareOn(platform) {
-  const params = getCardParams(); // build title, message, sender, gif from your current greeting state
-  const shareLink = `https://greet-diwali.vercel.app/share.html?title=${encodeURIComponent(params.title)}&message=${encodeURIComponent(params.message)}&sender=${encodeURIComponent(params.sender)}&gif=${encodeURIComponent(params.gif)}`;
+    // Legendary/Epic Card Logic
+    const legendaryCards = [
+      { name: "Lord Rama", rarity: "Legendary", color: "gold", img: "/assets/pixels/rama.png", desc: "Seventh avatar of Vishnu. The hero of the Ramayana, embodies virtue and dharma." },
+      { name: "Sita", rarity: "Legendary", color: "gold", img: "/assets/pixels/sita.png", desc: "Consort of Lord Rama, a legend of purity, nobility, and devotion." },
+      { name: "Ravan", rarity: "Legendary", color: "gold", img: "/assets/pixels/ravan.png", desc: "King of Lanka, famed antagonist of Ramayana, symbol of mastery but also ego." },
+      { name: "Hanuman", rarity: "Epic", color: "purple", img: "/assets/pixels/hanuman.png", desc: "Devout follower of Rama, famed for immense strength, courage, and loyalty." },
+      { name: "Lakshmana", rarity: "Epic", color: "purple", img: "/assets/pixels/lakshmana.png", desc: "Devoted brother to Rama, known for selfless service and valor." },
+    ];
+    function revealLegendaryCard() {
+      // pick random every time for demo; for per-user lock, use localStorage logic
+      const card = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
+      showLegendaryCard(card);
+    }
+    function showLegendaryCard(card) {
+      const revealDiv = document.getElementById('legendCardReveal');
+      revealDiv.innerHTML = `
+        <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)">
+          <div class="card-rarity">${card.rarity}</div>
+          <img class="pixel-img" src="${card.img}" />
+          <div class="card-name">${card.name}</div>
+          <div class="card-desc">${card.desc}</div>
+          <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
+        </div>
+      `;
+    }
+    let unlockedCard = null;
 
-  let shareText = `View your animated greeting card here: ${shareLink}\n\nWant to create your own? Go to https://greet-diwali.vercel.app/index.html`;
+// Show notification on first page load
+window.onload = function() {
+  setTimeout(() => {
+    document.getElementById('notifyBg').style.display = 'flex';
+    document.querySelector('.notify-popup').focus();
+  }, 900); // after the card loads
+};
 
-  if (platform === 'whatsapp') {
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
-  } else if (platform === 'facebook') {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`, "_blank");
-  }
-  // Same pattern for Telegram/Email etc.
+function startCardUnlock() {
+  const notifyBg = document.getElementById('notifyBg');
+  notifyBg.innerHTML = `
+    <div class="notify-popup">
+      <div class="card-loader-spin"></div>
+      <div style="font-size:1.08em;margin-top:17px;">Unlocking your character...</div>
+    </div>
+  `;
+  setTimeout(() => {
+    unlockedCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
+    notifyBg.style.display = "none";
+    showLegendaryCard(unlockedCard, true); // Show modal
+  }, 1250);
 }
 
-    function shareThisCard() { shareOn("whatsapp"); }
+// Update showLegendaryCard to accept isPopup param:
+function showLegendaryCard(card, isPopup) {
+  const revealDiv = document.getElementById('legendCardReveal');
+  revealDiv.innerHTML = `
+    <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)">
+      <div class="card-rarity">${card.rarity}</div>
+      <img class="pixel-img" src="${card.img}" />
+      <div class="card-name">${card.name}</div>
+      <div class="card-desc">${card.desc}</div>
 
-    function copyCurrentLink() {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        showToast("✓ Link copied to clipboard!");
+    </div>
+  `;
+  // If isPopup trigger, open it (tiny delay ensures node ready)
+  if (isPopup) setTimeout(() => popupCardManual(card), 50);
+}
+
+// Use popupCardManual (as already present) for modal opening
+
+// popupCard function updated:
+function popupCard(event) {
+  if (unlockedCard) popupCardManual(unlockedCard);
+}
+
+    // Popup logic
+    function popupCard(event) {
+      event.stopPropagation();
+      const card = event.currentTarget.cloneNode(true);
+      card.classList.add('modal-card-popup');
+      card.removeAttribute('onclick');
+      // close card button
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'modal-close-btn';
+      closeBtn.innerHTML = '×';
+      closeBtn.onclick = closeCardPopup;
+      // modal background
+      const modal = document.getElementById('modalBg');
+      modal.innerHTML = '';
+      modal.appendChild(card);
+      modal.appendChild(closeBtn);
+      modal.classList.add('active');
+      card.focus();
+      document.body.style.overflow = 'hidden';
+      modal.onclick = function(e) {
+        if (e.target === modal) closeCardPopup();
+      };
+      document.onkeydown = function(e) {
+        if (e.key === "Escape") closeCardPopup();
+      };
+    }
+    function closeCardPopup() {
+      const modal = document.getElementById('modalBg');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      modal.innerHTML = '';
+      document.onkeydown = null;
+    }
+    function downloadCard() {
+      html2canvas(document.querySelector('.legendary-card')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = "legendary_card.png";
+        link.href = canvas.toDataURL();
+        link.click();
       });
     }
-
-    function showToast(msg) {
-      const toast = document.getElementById("toast");
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
-    }
-
-    document.addEventListener("DOMContentLoaded", loadCard);
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <div class="notify-bg" id="notifyBg" style="display:none;">
+  <div class="notify-popup" tabindex="0">
+    🎉 You unlocked a special character!
+    <button class="notify-popup-btn" onclick="startCardUnlock()">Show my card</button>
+  </div>
+</div>
+
 </body>
 </html>
