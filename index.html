@@ -547,6 +547,7 @@
 
           <div class="actions">
             <button class="btn btn-secondary" style="grid-column: 1 / -1;" onclick="copyMessage()">📋 Copy Text</button>
+            
           </div>
 
           <!-- SHARE SECTION -->
@@ -559,12 +560,14 @@
             </div>
 
             <div class="share-platforms">
+              <button class="share-platform-btn" onclick="sendAsGif()">🎁 Send as GIF</button>
               <button class="share-platform-btn" onclick="shareVia('whatsapp')">💬 WhatsApp</button>
               <button class="share-platform-btn" onclick="shareVia('telegram')">✈️ Telegram</button>
               <button class="share-platform-btn" onclick="shareVia('email')">📧 Email</button>
               <button class="share-platform-btn" onclick="shareVia('facebook')">👍 Facebook</button>
               <button class="share-platform-btn" onclick="shareVia('twitter')">𝕏 Twitter</button>
             </div>
+            
 
             <div class="info-text">
               💡 Share this link with anyone! They'll see your card and can create their own greeting.
@@ -891,6 +894,33 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
   }
 }
 
+
+async function sendAsGif() {
+  try {
+    const gifUrl = currentGifUrl; // Your already uploaded Cloudinary GIF URL (should be set after uploading)
+    const appLink = "https://greet-diwali.vercel.app/"; // Your app link
+    const text = `🎆 I just created this animated Diwali greeting!\nMake yours here: ${appLink}`;
+
+    // Download the GIF blob
+    const response = await fetch(gifUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "diwali.gif", { type: "image/gif" });
+
+    // Web Share API: share GIF + message (works on supported mobile browsers)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        text: text,
+        title: "Animated Diwali Greeting"
+      });
+    } else {
+      alert("Your browser or device does not support sharing files directly. Please download the GIF and share manually.");
+    }
+  } catch (err) {
+    alert("Error preparing GIF for sharing: " + err.message);
+  }
+}
+
     async function downloadGif(e) {
   const btn = e.target;
   btn.disabled = true;
@@ -1021,7 +1051,7 @@ async function forceDownloadFromCloudinary(url, filename = "diwali.gif") {
       url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
       break;
   }
-  if (url) window.open(url, "_blank");
+  if (url) window.open(url, "_blank");  
 }
 
     function copyShareLink() {
