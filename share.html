@@ -203,7 +203,41 @@
   /* -------------------------------
    Responsive Design Enhancements
 --------------------------------*/
-@media (max-width: 1024px) {
+/* -------------------------------------------
+   Enhanced Responsive Fix (Cards not cutoff)
+--------------------------------------------*/
+
+@media (max-width: 1200px) {
+  .app-view {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .main-greeting {
+    width: 80%;
+    min-width: unset;
+  }
+
+  .card-box {
+    width: 300px;
+    padding: 18px;
+  }
+
+  .legendary-card {
+    transform: scale(0.95);
+    width: 190px;
+    height: 275px;
+  }
+
+  .modal-card-popup {
+    width: 220px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 1000px) {
   .app-view {
     flex-direction: column;
     align-items: center;
@@ -212,8 +246,8 @@
   }
 
   .main-greeting {
-    min-width: unset;
     width: 90%;
+    text-align: center;
   }
 
   .gif-container {
@@ -221,87 +255,48 @@
   }
 
   .card-box {
-    width: 85%;
+    width: 90%;
     min-height: auto;
-    padding: 18px;
+    padding: 16px;
   }
 
   .legendary-card {
     width: 180px;
     height: 260px;
-  }
-
-  .modal-card-popup {
-    width: 200px;
-    height: 280px;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    font-size: 15px;
-    overflow-x: hidden;
-  }
-
-  header h1 {
-    font-size: 2rem;
-  }
-
-  .app-view {
-    flex-direction: column;
-    align-items: center;
-    gap: 28px;
-    margin-top: 20px;
-  }
-
-  .main-greeting {
-    text-align: center;
-    width: 92%;
-  }
-
-  .gif-container {
-    width: 100%;
-    max-width: 340px;
-  }
-
-  .card-box {
-    width: 88%;
-    margin-top: 18px;
-  }
-
-  .legendary-card {
-    width: 170px;
-    height: 250px;
-    transform: scale(0.95);
+    transform: scale(1);
   }
 
   .modal-card-popup {
     width: 210px;
     height: 290px;
   }
+}
 
-  .card-title {
-    font-size: 1.6rem;
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
   }
 
-  .card-message {
-    font-size: 1rem;
+  .card-box {
+    width: 88%;
   }
 
-  .card-sender {
-    font-size: 0.9rem;
+  .legendary-card {
+    width: 165px;
+    height: 240px;
+  }
+
+  .modal-card-popup {
+    width: 200px;
+    height: 275px;
   }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 480px) {
   .app-view {
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
     margin-top: 12px;
-  }
-
-  header h1 {
-    font-size: 1.7rem;
   }
 
   .main-greeting {
@@ -310,38 +305,30 @@
 
   .gif-container {
     width: 95%;
-    box-shadow: 0 10px 30px rgba(255, 204, 51, 0.15);
   }
 
   .card-box {
     width: 92%;
     padding: 12px;
-    border: 1.5px dashed #ffd70044;
-  }
-
-  .card-box-title {
-    font-size: 1rem;
-    margin-bottom: 16px;
   }
 
   .legendary-card {
     width: 150px;
     height: 225px;
-    margin-bottom: 12px;
-    animation: none;
+    transform: scale(0.95);
   }
 
   .modal-card-popup {
-    width: 200px;
-    height: 270px;
+    width: 190px;
+    height: 260px;
   }
 
   .notify-popup {
     width: 85%;
-    padding: 22px;
-    font-size: 1rem;
+    padding: 20px;
   }
 }
+
 </style>
 </head>
 <body>
