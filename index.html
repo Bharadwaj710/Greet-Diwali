@@ -494,7 +494,139 @@
     margin-bottom: 0 !important;
   }
 }
+/* Fix modal preview appearance */
+#previewModal .modal-content {
+  background: #211742;
+  color: #ffd700;
+  font-family: Inter, system-ui, Segoe UI, Roboto, sans-serif;
+  border-radius: 16px;
+  padding: 38px 24px 30px 24px;
+  box-shadow: 0 12px 60px #000a, 0 0 14px #ffd70080;
+}
 
+#previewModal .card-title, #previewModal #modalTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 12px;
+  text-align: left;
+}
+#previewModal .card-subtitle, #previewModal #modalSubtitle {
+  font-size: 1.1rem;
+  color: #fff8;
+  margin-bottom: 8px;
+}
+#previewModal .card-recipient, #previewModal #modalRecipient {
+  font-size: 1.08rem;
+  color: #ffcc33;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+#previewModal .card-message, #previewModal #modalMessage {
+  font-size: 1.11rem;
+  color: #fff;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+}
+#previewModal .card-culture, #previewModal #modalCulture {
+  font-size: 1.01rem;
+  color: #ffc;
+  opacity: 0.85;
+  margin-bottom: 10px;
+}
+#previewModal .card-sender, #previewModal #modalSender {
+  font-size: 1rem;
+  color: #ffe49c;
+  opacity: 0.83;
+  margin-top: 14px;
+  text-align: right;
+}
+#previewModal .modal-card-inner {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+@media (max-width:800px) {
+  #previewModal .modal-content {
+    max-width: 98vw;
+    height: auto;
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 530px) {
+  .modal-card-inner, #previewModal .modal-card-inner {
+    flex-direction: row !important;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100vw;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+
+  /* Left and right (title and content) are each 50% of width */
+  .modal-card-inner > div {
+    width: 50% !important;
+    min-width: 0;
+    max-width: 50vw;
+    padding: 8px 4px !important;
+    box-sizing: border-box;
+    border: none !important;
+    margin: 0 !important;
+    text-align: left;
+    overflow-wrap: break-word;
+  }
+
+  /* Font and spacing adjustments for each part */
+  #modalTitle, .card-title {
+    font-size: 1.17rem !important;
+    line-height: 1.12;
+    margin-bottom: 2px;
+    word-break: break-word;
+  }
+  #modalSubtitle, .card-subtitle {
+    font-size: 0.89rem !important;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  #modalRecipient, .card-recipient {
+    font-size: 0.97rem !important;
+    margin-bottom: 4px !important;
+  }
+  #modalMessage, .card-message {
+    font-size: 0.97rem !important;
+    margin-bottom: 7px !important;
+    line-height: 1.43 !important;
+    word-break: break-word;
+  }
+  #modalCulture, .card-culture {
+    font-size: 0.85rem !important;
+    margin-bottom: 8px !important;
+    line-height: 1.3 !important;
+  }
+  #modalSender, .card-sender {
+    font-size: 0.87rem !important;
+    margin-top: 7px !important;
+    margin-bottom: 0 !important;
+  }
+  .modal-content, #previewModal .modal-content {
+    max-width: 98vw;
+    min-width: 0;
+    padding: 12px 6px 12px 6px !important;
+    box-sizing: border-box;
+  }
+  .close-modal, .modal-close-btn {
+    top: 8px !important;
+    right: 8px !important;
+    font-size: 1.13rem !important;
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
 
   </style>
 </head>
