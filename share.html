@@ -68,6 +68,17 @@
     box-shadow: 0 20px 60px rgba(255,204,51,0.2);
     margin: 22px auto 0 auto;
   }
+  .fullscreen-gif-container {
+  margin-bottom: 22px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(255,204,51,0.19);
+}
+.fullscreen-gif-container img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
   .gif-container img { width: 100%; display: block; border-radius: 12px; }
   .card-details { text-align: center; margin-top: 11px;}
   .card-title { color: #ffcc33; font-size: 2rem; font-weight: 800;}
@@ -76,11 +87,10 @@
   /* Card placement styles */
   .legendary-card {
   position: relative;
-  width: 204px;
-  height: 296px;
-  margin: 0 auto 8px auto;
+  min-width: 240px;
+  min-height: 266px;
+  margin: 0 auto 9px auto;
   border-radius: 15px;
- 
   box-shadow: 0 4px 18px 5px #EAC43555, 0 0 2px #FFF;
   display: flex;
   color: #fff;
@@ -113,14 +123,14 @@
     color: #e0ceff; text-shadow: 0 0 8px #d900ff, 1px 1px 3px #22003b;
   }
   .legendary-card .pixel-img {
-    width: 112px; height:112px;
+    width: 111px; height:112px;
     margin: 28px auto 14px auto;
     image-rendering: pixelated;
     border-radius: 8px;
     box-shadow: 0 0 16px #ffd70044;
   }
   .card-name {
-    font-size: 1.1rem; font-weight: bold; color: #fff; margin: 4px 0 10px 0;
+    font-size: 1.1rem; font-weight: bold; color: #fff; margin: 3px 0 10px 0;
     letter-spacing: 1.5px; text-shadow: 0 0 10px #222;
     z-index: 1;
   }
@@ -144,6 +154,13 @@
     transition: background .18s;
   }
   .card-fadeout { animation: cardFadeOut 0.46s forwards;}
+  /* Ensure popup legendary-card has the same look as vault card */
+.modal-card-popup.legendary-card {
+  height: 346px;
+  box-shadow: 0 4px 18px 5px #EAC43577, 0 0 2px #FFF, 0 0 32px #ffd70099;
+  border-radius: 15px;
+  opacity: 1 !important;
+}
   @keyframes cardFadeOut { to { opacity:0; transform: translateX(60px) scale(.85);}
   }
   @keyframes cardGlow {
@@ -171,10 +188,6 @@
   .modal-bg { position:fixed; inset:0; background:rgba(20,8,50,.96); z-index:999;
     display:none; align-items:center; justify-content:center;}
   .modal-bg.active { display:flex;}
-  .modal-card-popup { width:228px; height:320px; border-radius:15px; position:relative;
-    box-shadow:0 0 32px #ffd700cc,0 0 18px #fff2; display: flex;opacity:1 !important;
-    flex-direction:column; align-items:center; background:inherit; outline:none;
-    animation: modalPop .35s cubic-bezier(.49,1.25,.6,1.11);}
     @keyframes modalPop { from {opacity: 0; transform: scale(0.6);} to{opacity:1; transform:scale(1);}}
   .modal-close-btn { position: absolute; top: 14px; right: 16px; background: rgba(25,12,23,0.88); color: #ffd700;
     font-size:2em; border:none; border-radius:100%; width:38px;height:38px;
@@ -328,6 +341,39 @@
     padding: 20px;
   }
 }
+/* By default, stack in column: message on top of card */
+.unlock-flex-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* On small screens, use row: message left, card right */
+@media (max-width: 600px) {
+  .unlock-flex-row {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 9px;
+  }
+  .unlock-msg {
+    margin: 0 10px 0 0 !important;
+    font-size: 1rem !important;
+    min-width: 93px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+  }
+}
+@media (min-width: 601px) {
+  .unlock-msg {
+    margin: 18px 0 14px 0 !important;
+    text-align: center;
+    font-size: 18px !important;
+  }
+}
+
 /* Fullscreen Modal for Card */
 .modal-bg#greetingModal {
   display: none; position: fixed; inset: 0;
@@ -365,7 +411,7 @@
   <div id="greetingModal" class="modal-bg" tabindex="-1">
   <div class="fullscreen-card-popup">
     <button class="close-btn" onclick="closeGreetingModal()">×</button>
-    <button class="create-yours-btn" onclick="window.location.href='https://greet-diwali.vercel.app/'">Create Yours</button>
+    <div class="fullscreen-gif-container" id="fullscreenGifContainer"></div>
     <div id="fullscreenCardDetails"></div>
   </div>
 </div>
@@ -374,6 +420,14 @@
       <div class="emoji-bounce">🎆 ✨ 🎇</div>
       <h1>Happy Diwali!</h1>
       <p id="greeting">A beautiful greeting from a friend</p>
+      <button 
+  class="create-yours-btn"
+  style="align-self: flex-start; margin-top: 80px;" 
+  onclick="window.open('https://greet-diwali.vercel.app/','_blank','noopener,noreferrer')"
+>
+  Create Yours
+</button>
+
     </header>
     <div class="gif-container" id="gifContainer"></div>
     <div class="card-details" id="cardDetails"></div>
@@ -483,11 +537,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function openGreetingModal() {
-  document.getElementById('fullscreenCardDetails').innerHTML = document.getElementById('cardDetails').innerHTML;
+  // Get params to access GIF
+  const params = getParams();
+  // Set content
+  document.getElementById('fullscreenCardDetails').innerHTML =
+    document.getElementById('cardDetails').innerHTML;
+  // Add GIF (if exists)
+  document.getElementById('fullscreenGifContainer').innerHTML =
+    params.gif
+      ? `<img src="${params.gif}" alt="Diwali Greeting GIF" style="border-radius:12px; width:100%;">`
+      : "";
+  // Show modal
   document.getElementById('greetingModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closeGreetingModal() {
   document.getElementById('greetingModal').classList.remove('active');
   document.body.style.overflow = '';
@@ -596,7 +659,19 @@ function popupCardManual(cardobj, sourceCardElem = null) {
   const modal = document.getElementById('modalBg');
   modal.innerHTML = ''; // clear previous
 
-  // Build popup card using same classes so styles/glow persist
+  // Message above the card
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'unlock-msg';
+  msgDiv.textContent = `You have unlocked an ${cardobj.rarity} character!!`;
+  msgDiv.style.fontFamily = "inherit";
+  msgDiv.style.color = cardobj.color === "gold" ? "#ffd700" : "#b780ff";
+  msgDiv.style.textAlign = "center";
+  msgDiv.style.fontSize = "18px";
+  msgDiv.style.fontWeight = "bold";
+  msgDiv.style.margin = "18px 0 14px 0";
+  msgDiv.style.letterSpacing = "1px";
+
+  // Build popup card identical to main card (inherit full styles)
   const popupCard = document.createElement('div');
   popupCard.className = `legendary-card modal-card-popup card-${cardobj.color}`;
   popupCard.innerHTML = `
@@ -606,31 +681,36 @@ function popupCardManual(cardobj, sourceCardElem = null) {
     <div class="card-desc">${cardobj.desc}</div>
     <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
   `;
-
   // Close button
   const closeBtn = document.createElement('button');
   closeBtn.className = 'modal-close-btn';
   closeBtn.innerHTML = '×';
   closeBtn.onclick = () => closeCardPopup(popupCard);
 
-  // Append and activate
+  modal.appendChild(msgDiv);
   modal.appendChild(popupCard);
   modal.appendChild(closeBtn);
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 
-  // enable tilt on popup too
+  // Tilt on modal too
   enableCardTilt(popupCard);
 
-  // backdrop click should close
+  // Backdrop click should close
   modal.addEventListener('click', function onBackdrop(e) {
     if (e.target === modal) {
       modal.removeEventListener('click', onBackdrop);
       closeCardPopup(popupCard);
     }
   });
+const flexWrap = document.createElement('div');
+flexWrap.className = 'unlock-flex-row';
+flexWrap.appendChild(msgDiv);
+flexWrap.appendChild(popupCard);
 
-  // Escape key to close
+modal.appendChild(flexWrap);
+modal.appendChild(closeBtn);
+  // Esc to close
   function onKey(e) {
     if (e.key === 'Escape') {
       closeCardPopup(popupCard);
