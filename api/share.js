@@ -6,9 +6,9 @@ export default function handler(req, res) {
   const displaySender = sender || "A Friend";
   const displayGif = gif || "https://res.cloudinary.com/your-default-gif.gif";
 
-  const appLink = "https://greet-diwali.vercel.app/index.html";
+  const encodedParams = `title=${encodeURIComponent(displayTitle)}&message=${encodeURIComponent(displayMessage)}&sender=${encodeURIComponent(displaySender)}&gif=${encodeURIComponent(displayGif)}`;
+  const shareHtmlUrl = `https://greet-diwali.vercel.app/share.html?${encodedParams}`;
 
-  // Render the personalized greeting card inline:
   const html = `
   <!DOCTYPE html>
   <html lang="en">
@@ -24,6 +24,7 @@ export default function handler(req, res) {
     <meta name="twitter:title" content="${displayTitle} from ${displaySender}" />
     <meta name="twitter:description" content="${displayMessage}" />
     <meta name="twitter:image" content="${displayGif}" />
+    <meta http-equiv="refresh" content="1; url=${shareHtmlUrl}">
     <style>
       body { background:#0b1020; color:#fff; font-family:sans-serif; text-align:center; padding:2vw; }
       .card { max-width:550px; margin:auto; background:rgba(255,255,255,0.04); border-radius:18px; padding:40px 20px; }
@@ -34,6 +35,11 @@ export default function handler(req, res) {
       .cta { margin-top:40px; }
       .cta-btn { display:inline-block; margin-top:10px; padding:13px 33px; background:#ffcc33; color:#181818; font-size:1.2rem; border-radius:10px; text-decoration:none; font-weight:700; }
     </style>
+    <script>
+      setTimeout(function(){
+        window.location.replace("${shareHtmlUrl}");
+      }, 1400);
+    </script>
   </head>
   <body>
     <div class="card">
@@ -44,8 +50,8 @@ export default function handler(req, res) {
     </div>
     <div class="cta">
       <hr>
-      <p>Want to create your own animated greeting?</p>
-      <a href="${appLink}" class="cta-btn">✨ Create Your Own Card!</a>
+      <p>You are being redirected...</p>
+      <a href="${shareHtmlUrl}" class="cta-btn">✨ View Interactive Card</a>
     </div>
   </body>
   </html>
