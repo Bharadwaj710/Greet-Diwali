@@ -16,242 +16,207 @@
 <meta property="twitter:title" content="Happy Diwali 🎆" />
 <meta property="twitter:description" content="A beautiful personalized Diwali greeting just for you!" />
 <meta property="twitter:image" content="" id="twitterImage" />
-  <style>
-    /* ...your previous Diwali card styles... */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --primary: #ffcc33; --primary-dark: #ff6f61; --bg: #0b1020; --bg-light: #071025; }
-    html, body {
-      width: 100%; height: 100%;
-      font-family: 'Inter', system-ui, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%);
-      color: #fff; overflow-x: hidden;
-    }
-    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .wrapper { width: 100%; max-width: 900px; }
-    header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.6s ease-out; }
-    .emoji-bounce { font-size: 3.5rem; margin-bottom: 20px; animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 100% { transform: translateY(0);} 50% { transform: translateY(-15px);} }
-    header h1 {
-      font-size: 2.8rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 15px; font-weight: 800;
-    }
-    header p { font-size: 1.05rem; opacity: 0.85; margin-bottom: 8px; }
-    .subtitle { font-size: 0.95rem; opacity: 0.65; }
-    .animated-card {
-      background: rgba(255,255,255,0.06); backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px; padding: 40px; margin-bottom: 40px;
-      animation: fadeInUp 0.6s ease-out 0.2s both;
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .gif-container { width: 100%; max-width: 600px; border-radius: 12px; overflow: hidden;
-      box-shadow: 0 20px 60px rgba(255,204,51,0.2); margin-bottom: 30px; }
-    .gif-container img { width: 100%; display: block; }
-    .card-details { width: 100%; text-align: center; }
-    .card-title { font-size: 2rem; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
-    .card-message { font-size: 1.05rem; line-height: 1.8; opacity: 0.9; margin-bottom: 25px; white-space: pre-wrap; }
-    .card-sender { font-size: 1rem; opacity: 0.75; border-top: 1px solid rgba(255,204,51,0.2); padding-top: 20px; margin-top: 20px; }
-    .cta-container {
-      background: rgba(255,204,51,0.08); border: 1px solid rgba(255,204,51,0.3);
-      border-radius: 16px; padding: 40px; text-align: center;
-    }
-    .cta-emoji { font-size: 3rem; margin-bottom: 15px; display: block; }
-    .cta-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
-    .cta-text { font-size: 1.05rem; opacity: 0.85; margin-bottom: 30px; }
-    .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-    .btn {
-      padding: 16px 20px; border: none; border-radius: 10px;
-      font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s;
-      text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #000; }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,204,51,0.3); }
-    .btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: var(--primary); }
-    .share-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 10px; }
-    .share-btn { padding: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
-      border-radius: 8px; color: #fff; font-weight: 500; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
-    .share-btn:hover { background: rgba(255,204,51,0.15); border-color: var(--primary); transform: translateY(-2px); }
-    .toast {
-      position: fixed; bottom: 30px; right: 30px;
-      background: rgba(0,0,0,0.85); border: 1px solid rgba(255,204,51,0.4);
-      color: var(--primary); padding: 14px 20px; border-radius: 8px;
-      font-size: 0.9rem; display: none; z-index: 1000;
-    }
-    .toast.show { display: block; }
-    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
-
-    /* Legendary/Epic Card Styles */
-    .legendary-card {
-      position: relative;
-      width: 220px;
-      height: 320px;
-      margin: 40px auto 12px auto;
-      border-radius: 15px;
-      box-shadow: 0 0 18px 5px #EAC43555, 0 0 2px #FFF;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: 'VT323', monospace;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform .23s;
-      z-index: 11;
-      animation: holoGlow 2.5s infinite alternate;
-    }
-    .card-gold { background: linear-gradient(135deg, gold, gold 60%, #ffe3d9, #fff6d9, #ffc3b8 95%); }
-    .card-purple { background: linear-gradient(135deg, #772ebd, #9600d8, #bf69cc 75%, #320a46 100%); }
-    .legendary-card:hover, .legendary-card:focus-visible {
-      transform: scale(1.04) rotate(-2deg);
-      box-shadow: 0 0 28px 12px #FFD700, 0 0 44px #EAC43555;
-      filter: drop-shadow(0 0 8px #ebe9ff);
-      animation: cardWiggle 0.8s;
-      outline: none;
-    }
-    @keyframes holoGlow {
-      0% { filter: brightness(1) drop-shadow(0 0 10px gold);}
-      100% { filter: brightness(1.35) drop-shadow(0 0 25px #ff79c6);}
-    }
-    @keyframes cardWiggle {
-      0% { transform: scale(1.04) rotate(-2deg);}
-      20% { transform: scale(1.07) rotate(2deg);}
-      50% { transform: scale(1.08) rotate(-1deg);}
-      70% { transform: scale(1.06) rotate(1deg);}
-      100% { transform: scale(1.04) rotate(-2deg);}
-    }
-    .legendary-card::before {
-      content: "";
-      position: absolute;
-      inset: -5px;
-      border-radius: 17px;
-      background: linear-gradient(120deg, rgb(145, 131, 52), transparent 50%, gold);
-      opacity: 0.18;
-      z-index: 0;
-      animation: rainbowShine 3s linear infinite;
-    }
-    .card-purple::before {
-      background: linear-gradient(110deg, #e79ffa 4%, #6600cc 75%, #f6e8ff 95%);
-      opacity: .25;
-    }
-    @keyframes rainbowShine { to { filter: hue-rotate(360deg);} }
-    .pixel-img {
-      width: 120px;
-      height: 120px;
-      margin: 22px 0 12px 0;
-      z-index: 1;
-      image-rendering: pixelated;
-    }
-    .card-name { font-size: 1.2rem; color: #fff; font-weight: bold; margin: 8px 0;
-  z-index: 1; letter-spacing: 1.5px; text-shadow: 0 0 10px #222;}
-    .card-purple .card-name { color: #e6c4ff; }
-    .card-desc { font-size: 0.88rem; color: #fff; text-align: center; margin: 10px 15px 0 15px; z-index: 1; text-shadow: 0 0 4px #111;}
-    .card-rarity {
-      position: absolute; left: 10px; top: 10px;
-      color: #fff; font-size: 0.99em;
-      letter-spacing: 1.4px; text-shadow: 0 0 7px #ffd700, 1px 1px 2px #000;
-      z-index: 2;
-    }
-    .card-purple .card-rarity {
-      color: #e0ceff; text-shadow: 0 0 8px #d900ff, 1px 1px 3px #22003b;
-    }
-    .legendary-card button {
-      margin: 18px auto 0 auto;
-      padding: 7px 26px;
-      font-family: inherit;
-      font-size: 1.07em;
-      font-weight: bold;
-      border-radius: 8px;
-      border: none;
-      background: linear-gradient(120deg, #fffbbb, #ffd036 55%, #ffadfa 100%);
-      color: #563705;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #fff8, 0 0 2px #fff3;
-      transition: background .18s;
-    }
-    .card-purple button {
-      background: linear-gradient(110deg, #d7b9fa, #ae7deb 70%, #ffadfa 100%);
-      color: #390047;
-    }
-
-    /* Modal Styles */
-    .modal-bg {
-  position: fixed;
-  inset: 0;
-  background: rgb(20, 8, 50); /* fully opaque background */
-  z-index: 999;
-  display: none;
+<style>
+  :root { --primary: #ffcc33; --primary-dark: #ff6f61; --bg: #0b1020; --bg-light: #071025; }
+  body, html {
+    width: 100%; height: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%);
+    color: #fff; overflow-x: hidden;
+  }
+  .app-view {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 56px; margin-top: 32px;
+  }
+  .main-greeting { min-width: 400px; }
+  .card-box {
+    width: 240px;
+    min-height: 370px;
+    background: rgba(255,255,255,0.08);
+    border: 2px dashed #ffd70044;
+    border-radius: 18px;
+    box-shadow: 0 0 18px #ffd70022, 0 0 4px #1112;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+    margin-top: 20px;
+    transition: box-shadow 0.23s;
+  }
+  .card-box-title {
+    color: #ffd700;
+    font-weight: 500; font-size: 1.1rem;
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+  header { text-align: center; margin-bottom: 38px; }
+  .emoji-bounce { font-size: 3.1rem; margin-bottom: 14px; }
+  header h1 {
+    font-size: 2.6rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 11px; font-weight: 800;
+  }
+  header p { font-size: 1.15rem; }
+  .gif-container {
+    max-width: 600px; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(255,204,51,0.2);
+    margin: 22px auto 0 auto;
+  }
+  .gif-container img { width: 100%; display: block; border-radius: 12px; }
+  .card-details { text-align: center; margin-top: 11px;}
+  .card-title { color: #ffcc33; font-size: 2rem; font-weight: 800;}
+  .card-message { font-size: 1.05rem; margin: 20px 0; white-space: pre-wrap;}
+  .card-sender { font-size: 1rem; opacity: 0.75; border-top: 1px solid rgba(255,204,51,0.2); padding-top: 20px; margin-top: 20px;}
+  /* Card placement styles */
+  .legendary-card {
+  position: relative;
+  width: 204px;
+  height: 296px;
+  margin: 0 auto 8px auto;
+  border-radius: 15px;
+ 
+  box-shadow: 0 4px 18px 5px #EAC43555, 0 0 2px #FFF;
+  display: flex;
+  color: #fff;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  animation: modalBgFade 0.17s;
+  font-family: 'VT323', monospace;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+  background: linear-gradient(135deg, gold, gold 60%, #ffe3d9, #fff6d9, #ffc3b8 95%);
+  transform-style: preserve-3d;
+  animation: cardSlideIn 0.5s ease forwards, floatIdle 5s ease-in-out infinite, cardGlow 3s ease-in-out infinite,glowIn 0.4s ease-out;
+  transition: box-shadow 0.2s ease, filter 0.13s ease;
+  will-change: transform, box-shadow;
 }
-    .modal-bg.active { display: flex;}
-    .modal-card-popup {
-      animation: modalPop 0.21s cubic-bezier(.47,1.38,.6,1.11);
-      filter: drop-shadow(0 0 22px #ffd700a8);
-      outline: none;
-      background: none;
-    }
-    @keyframes modalPop { from { transform: scale(0.7); opacity: 0;} to{transform:scale(1);opacity:1;} }
-    @keyframes modalBgFade { from{opacity:.2;} to {opacity:1;}}
-    .modal-close-btn {
-      position: absolute;
-      top: 23px; right: 28px;
-      background: rgba(25,12,23,0.95);
-      color: #ffd700;
-      border: none; border-radius: 100%;
-      font-size: 2.1em; z-index: 10;
-      width: 41px; height: 41px;
-      box-shadow: 0 0 8px #fffa;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background .15s;
-    }
-    .modal-close-btn:hover {
-      background: #ffd700;
-      color: #320a46;
-      box-shadow: 0 0 14px #ffd;
-    }
-    /* Notification Styles */
-.notify-bg {
-  position: fixed; inset: 0; z-index: 99999;
-  background: rgba(32,12,48,0.8); display: flex; align-items: center; justify-content: center; animation: notifyFade .19s;
+.card-purple {
+  box-shadow: 0 0 30px 6px rgba(138, 43, 226, 0.6), 0 0 60px 12px rgba(138, 43, 226, 0.3);
+  border: 2px solid rgba(138, 43, 226, 0.8);
 }
-@keyframes notifyFade { from { opacity:0; } to { opacity:1; } }
-.notify-popup {
-  background: linear-gradient(90deg, #ffd700 60%, #ffe3d9 100%);
-  color: #4e3806; font-weight: 700; font-size: 1.16em;
-  border-radius: 14px; padding: 30px 36px; min-width:220px; min-height:80px;
-  box-shadow: 0 9px 42px #ffd966b0, 0 0 8px #fff8;
-  display: flex; flex-direction:column; align-items:center; justify-content:center;
-  animation: modalPop .25s cubic-bezier(.47,1.38,.6,1.11); cursor:pointer;
+  .card-purple {
+    background: linear-gradient(135deg, #772ebd, #9600d8, #bf69cc 75%, #320a46 100%);
+  }
+  .legendary-card .card-rarity {
+    position: absolute; left: 14px; top: 15px;
+    color: #fff; font-size: 1em;
+    letter-spacing: 1.4px; text-shadow: 0 0 7px #ffd700, 1px 1px 2px #000;
+    z-index: 3;
+  }
+  .card-purple .card-rarity {
+    color: #e0ceff; text-shadow: 0 0 8px #d900ff, 1px 1px 3px #22003b;
+  }
+  .legendary-card .pixel-img {
+    width: 112px; height:112px;
+    margin: 28px auto 14px auto;
+    image-rendering: pixelated;
+    border-radius: 8px;
+    box-shadow: 0 0 16px #ffd70044;
+  }
+  .card-name {
+    font-size: 1.1rem; font-weight: bold; color: #fff; margin: 4px 0 10px 0;
+    letter-spacing: 1.5px; text-shadow: 0 0 10px #222;
+    z-index: 1;
+  }
+  .card-purple .card-name { color: #e6c4ff;}
+  .card-desc {
+    font-size: 0.97rem;
+    color: #eee; text-align: center;
+    margin: 8px 17px 0 17px; z-index: 1; text-shadow: 0 0 4px #111;
+  }
+  .legendary-card button, .modal-card-popup button {
+    margin: 19px auto 0 auto;
+    padding: 7px 20px;
+    font-size: 1.07em;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(120deg, #fffbbb, #ffd036 55%, #ffadfa 100%);
+    color: #563705;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #fff8, 0 0 2px #fff3;
+    transition: background .18s;
+  }
+  .card-fadeout { animation: cardFadeOut 0.46s forwards;}
+  @keyframes cardFadeOut { to { opacity:0; transform: translateX(60px) scale(.85);}
+  }
+  @keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 18px 5px rgba(255, 215, 0, 0.4), 0 0 4px #fff2; }
+  50% { box-shadow: 0 0 28px 8px rgba(255, 215, 0, 0.75), 0 0 6px #fff8; }
 }
-.notify-popup:hover { filter:brightness(1.07); }
-.notify-popup-btn {
-  margin-top: 18px; background: #fffdd9; border-radius: 8px; color: #b88a00; font-weight:700; font-size:1em;
-  border:none; padding:8px 28px; cursor:pointer; box-shadow:0 2px 8px #ffd8;
+@keyframes floatIdle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.01); }
 }
-.card-loader-spin {
-  width:60px;height:60px;
-  border-radius:50%;border:7px solid #ffd700; border-top:7px solid #f7b40a;
-  animation: spinLoader 1.05s linear infinite; margin:21px auto;
-  box-shadow: 0 2px 12px #ffd7008e;
+@keyframes glowIn {
+  from {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-@keyframes spinLoader { to { transform: rotate(360deg);} }
-
-  </style>
+@keyframes cardSlideIn {
+  from { opacity:0; transform: translateY(30px) scale(0.96);}
+  to { opacity:1; transform: translateY(0) scale(1);}
+}  /* Modal styles (popup/download) */
+  .modal-bg { position:fixed; inset:0; background:rgba(20,8,50,.96); z-index:999;
+    display:none; align-items:center; justify-content:center;}
+  .modal-bg.active { display:flex;}
+  .modal-card-popup { width:228px; height:320px; border-radius:15px; position:relative;
+    box-shadow:0 0 32px #ffd700cc,0 0 18px #fff2; display: flex;opacity:1 !important;
+    flex-direction:column; align-items:center; background:inherit; outline:none;
+    animation: modalPop .35s cubic-bezier(.49,1.25,.6,1.11);}
+    @keyframes modalPop { from {opacity: 0; transform: scale(0.6);} to{opacity:1; transform:scale(1);}}
+  .modal-close-btn { position: absolute; top: 14px; right: 16px; background: rgba(25,12,23,0.88); color: #ffd700;
+    font-size:2em; border:none; border-radius:100%; width:38px;height:38px;
+    cursor:pointer; display:flex;align-items:center;justify-content:center; transition:background .2s;}
+  .modal-close-btn:hover { background:#ffd700; color:#320a46; box-shadow:0 0 14px #ffd;}
+  /* Notification Styles */
+  .notify-bg { position: fixed; inset: 0; z-index:99999; background: rgba(32,12,48,0.8); display: flex;
+    align-items: center; justify-content: center;}
+  .notify-popup {
+    background: linear-gradient(90deg, #ffd700 60%, #ffe3d9 100%);
+    color: #4e3806; font-weight: 700; font-size: 1.16em;
+    border-radius: 14px; padding: 30px 36px; min-width:220px; min-height:80px;
+    box-shadow: 0 9px 42px #ffd966b0, 0 0 8px #fff8;
+    display: flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .notify-popup button {
+    margin-top:18px; background:#fffdd9; border-radius:8px; color:#b88a00; font-weight:700;
+    font-size:1em; border:none; padding:8px 28px; cursor:pointer; box-shadow:0 2px 8px #ffd8;
+  }
+  .card-loader-spin { width:48px;height:48px; border-radius:50%;
+    border:7px solid #ffd700; border-top:7px solid #f7b40a; animation:spinLoader 1.05s linear infinite;
+    margin:18px auto; box-shadow:0 2px 12px #ffd7008e;}
+    
+  @keyframes spinLoader { to { transform: rotate(360deg);}}
+</style>
 </head>
 <body>
-<div class="wrapper">
-  <header>
-    <div class="emoji-bounce">🎆 ✨ 🎇</div>
-    <h1>Happy Diwali!</h1>
-    <p id="greeting">A beautiful greeting from a friend</p>
-  </header>
-  <div class="gif-container" id="gifContainer"></div>
-  <div class="card-details" id="cardDetails"></div>
+<div class="app-view">
+  <div class="main-greeting">
+    <header>
+      <div class="emoji-bounce">🎆 ✨ 🎇</div>
+      <h1>Happy Diwali!</h1>
+      <p id="greeting">A beautiful greeting from a friend</p>
+    </header>
+    <div class="gif-container" id="gifContainer"></div>
+    <div class="card-details" id="cardDetails"></div>
+  </div>
+  <div class="card-box" id="cardBox">
+    <div class="card-box-title">Your Card Vault</div>
+    <!-- Legendary card will be placed here -->
+  </div>
 </div>
 <div class="notify-bg" id="notifyBg">
   <div class="notify-popup" tabindex="0">
@@ -259,11 +224,8 @@
     <button class="notify-popup-btn" onclick="startCardUnlock()">Show my card</button>
   </div>
 </div>
-
 <div class="modal-bg" id="modalBg" tabindex="-1"></div>
-
 <script>
-// Data
 const legendaryCards = [
   { name: "Lord Rama", rarity: "Legendary", color: "gold", img: "/assets/pixels/rama.png", desc: "Seventh avatar of Vishnu. The hero of the Ramayana, embodies virtue and dharma." },
   { name: "Sita", rarity: "Legendary", color: "gold", img: "/assets/pixels/sita.png", desc: "Consort of Lord Rama, a legend of purity, nobility, and devotion." },
@@ -282,6 +244,12 @@ function getParams() {
   };
 }
 
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 function loadCard() {
   const params = getParams();
   document.getElementById("pageTitle").textContent = `${params.title} 🎆`;
@@ -298,25 +266,64 @@ function loadCard() {
   `;
 }
 
-function escapeHtml(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// Show notification after load
 document.addEventListener("DOMContentLoaded", () => {
   loadCard();
   setTimeout(() => {
     const notify = document.getElementById('notifyBg');
     if (notify) {
       notify.style.display = 'flex';
-      notify.querySelector('.notify-popup').focus();
+      const popup = notify.querySelector('.notify-popup');
+      if (popup) popup.focus();
     }
-  }, 900);
+  }, 800);
 });
 
-// Notification unlock handler & card popup display
+/* ---------------------------
+   Card tilt / hover behavior
+   --------------------------- */
+function enableCardTilt(cardElem) {
+  // ensure preserve-3d and smooth transitions
+  cardElem.style.transformStyle = 'preserve-3d';
+  cardElem.style.transition = 'transform 300ms ease';
+
+  let rafId = null;
+  let currentX = 0, currentY = 0, targetX = 0, targetY = 0;
+
+  function render() {
+    // simple lerp for smoothness
+    currentX += (targetX - currentX) * 0.15;
+    currentY += (targetY - currentY) * 0.15;
+    cardElem.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg) scale(1.03)`;
+    rafId = requestAnimationFrame(render);
+  }
+
+  cardElem.addEventListener('mousemove', (e) => {
+    const rect = cardElem.getBoundingClientRect();
+    const x = (e.clientX - rect.left) - rect.width / 2;
+    const y = (e.clientY - rect.top) - rect.height / 2;
+    // tilt: small angle, invert X for natural feel
+    targetY = (x / rect.width) * 10;   // rotateY
+    targetX = -(y / rect.height) * 10; // rotateX
+    if (!rafId) render();
+  });
+
+  cardElem.addEventListener('mouseleave', () => {
+    // smooth return to center
+    targetX = 0;
+    targetY = 0;
+    // let render settle then cancel RAF
+    setTimeout(() => {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      cardElem.style.transition = 'transform 380ms cubic-bezier(.2,.9,.2,1)';
+      cardElem.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      setTimeout(() => { cardElem.style.transition = ''; }, 420);
+    }, 300);
+  });
+}
+
+/* ---------------------------
+   Unlock + show card in vault
+   --------------------------- */
 let unlockedCard = null;
 
 function startCardUnlock() {
@@ -324,34 +331,54 @@ function startCardUnlock() {
   notifyBg.innerHTML = `
     <div class="notify-popup">
       <div class="card-loader-spin"></div>
-      <div style="font-size:1.2em; margin-top: 16px;">Unlocking your character...</div>
+      <div style="font-size:1.15em;margin-top:16px;">Unlocking your character...</div>
     </div>
   `;
   setTimeout(() => {
     unlockedCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
     notifyBg.style.display = "none";
-    showLegendaryCard(unlockedCard, true);
+    showLegendaryCard(unlockedCard);
   }, 1200);
 }
 
-function showLegendaryCard(card, isPopup) {
-  const gifContainer = document.getElementById('gifContainer');
-  gifContainer.innerHTML += `
-    <div class="legendary-card card-${card.color}" tabindex="0" onclick="popupCard(event)" style="margin-top:20px;">
-      <div class="card-rarity">${card.rarity}</div>
-      <img class="pixel-img" src="${card.img}" />
-      <div class="card-name">${card.name}</div>
-      <div class="card-desc">${card.desc}</div>
+function showLegendaryCard(cardobj) {
+  const cardBox = document.getElementById('cardBox');
+  // Only append if not already present
+  if (!cardBox.querySelector('.legendary-card')) {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = `legendary-card card-${cardobj.color}`;
+    cardDiv.innerHTML = `
+      <div class="card-rarity">${cardobj.rarity}</div>
+      <img class="pixel-img" src="${cardobj.img}" />
+      <div class="card-name">${cardobj.name}</div>
+      <div class="card-desc">${cardobj.desc}</div>
       <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
-    </div>
-  `;
-  if (isPopup) setTimeout(() => popupCardManual(card), 100);
+    `;
+    cardBox.appendChild(cardDiv);
+
+    // enable tilt + idle floating (tilt function handles hover)
+    enableCardTilt(cardDiv);
+
+    // When clicked, pass the data object to open popup
+    cardDiv.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') {
+        popupCardManual(cardobj, cardDiv);
+      }
+    });
+  }
 }
 
-function popupCardManual(cardobj) {
-  const cardDiv = document.createElement('div');
-  cardDiv.className = `legendary-card modal-card-popup card-${cardobj.color}`;
-  cardDiv.innerHTML = `
+/* ---------------------------
+   Popup (modal) behavior
+   --------------------------- */
+function popupCardManual(cardobj, sourceCardElem = null) {
+  const modal = document.getElementById('modalBg');
+  modal.innerHTML = ''; // clear previous
+
+  // Build popup card using same classes so styles/glow persist
+  const popupCard = document.createElement('div');
+  popupCard.className = `legendary-card modal-card-popup card-${cardobj.color}`;
+  popupCard.innerHTML = `
     <div class="card-rarity">${cardobj.rarity}</div>
     <img class="pixel-img" src="${cardobj.img}" />
     <div class="card-name">${cardobj.name}</div>
@@ -359,50 +386,74 @@ function popupCardManual(cardobj) {
     <button onclick="event.stopPropagation(); downloadCard()">Download Card</button>
   `;
 
+  // Close button
   const closeBtn = document.createElement('button');
   closeBtn.className = 'modal-close-btn';
   closeBtn.innerHTML = '×';
-  closeBtn.onclick = closeCardPopup;
+  closeBtn.onclick = () => closeCardPopup(popupCard);
 
-  const modal = document.getElementById('modalBg');
-  modal.innerHTML = '';
-  modal.appendChild(cardDiv);
+  // Append and activate
+  modal.appendChild(popupCard);
   modal.appendChild(closeBtn);
   modal.classList.add('active');
-  cardDiv.focus();
   document.body.style.overflow = 'hidden';
 
-  modal.onclick = function(e) {
-    if (e.target === modal) closeCardPopup();
-  };
+  // enable tilt on popup too
+  enableCardTilt(popupCard);
 
-  document.onkeydown = function(e) {
-    if (e.key === "Escape") closeCardPopup();
-  };
+  // backdrop click should close
+  modal.addEventListener('click', function onBackdrop(e) {
+    if (e.target === modal) {
+      modal.removeEventListener('click', onBackdrop);
+      closeCardPopup(popupCard);
+    }
+  });
+
+  // Escape key to close
+  function onKey(e) {
+    if (e.key === 'Escape') {
+      closeCardPopup(popupCard);
+      document.removeEventListener('keydown', onKey);
+    }
+  }
+  document.addEventListener('keydown', onKey);
 }
 
-function popupCard(event) {
-  if (unlockedCard) popupCardManual(unlockedCard);
-}
-
-function closeCardPopup() {
+function closeCardPopup(cardDiv) {
   const modal = document.getElementById('modalBg');
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-  modal.innerHTML = '';
-  document.onkeydown = null;
+  if (!cardDiv) {
+    modal.classList.remove('active');
+    modal.innerHTML = '';
+    document.body.style.overflow = '';
+    return;
+  }
+  cardDiv.classList.add('card-fadeout');
+  setTimeout(() => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    modal.innerHTML = '';
+  }, 445);
 }
 
+/* ---------------------------
+   Download (html2canvas)
+   --------------------------- */
 function downloadCard() {
-  html2canvas(document.querySelector('.legendary-card')).then(canvas => {
+  const target = document.querySelector('.modal-card-popup');
+  if (!target) return;
+  html2canvas(target, {backgroundColor: null}).then(canvas => {
     const link = document.createElement('a');
     link.download = "legendary_card.png";
     link.href = canvas.toDataURL();
     link.click();
+  }).catch(err => {
+    console.error('downloadCard error', err);
   });
 }
+
+/* Expose startCardUnlock for inline onclick */
+window.startCardUnlock = startCardUnlock;
 </script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
