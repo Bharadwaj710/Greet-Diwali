@@ -328,10 +328,47 @@
     padding: 20px;
   }
 }
+/* Fullscreen Modal for Card */
+.modal-bg#greetingModal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(24,14,40,0.95); z-index: 9999;
+  align-items: center; justify-content: center;
+}
+.modal-bg#greetingModal.active { display: flex; }
+.fullscreen-card-popup {
+  position: relative; max-width: 430px; width:96vw; min-height: 370px;
+  background: linear-gradient(120deg,#18173a 75%, #ffe69d 135%);
+  border-radius: 22px; box-shadow: 0 18px 80px #ffd7009a, 0 0 6px #fff9;
+  padding: 48px 34px 40px 34px; text-align: left;
+}
+.close-btn {
+  position: absolute; top: 11px; right: 15px; font-size: 2rem; color: #ffd700;
+  background: rgba(0,0,0,0.66); border: none; border-radius: 50%; width:38px; height:38px; cursor: pointer; z-index:11;
+}
+.create-yours-btn {
+  position: absolute; top: 15px; right: 67px; background: linear-gradient(120deg,#fffcab,#ffd036 55%,#ffadfa 100%);
+  color: #320a46; font-size:1rem; font-weight:700; border-radius:8px; border:none; cursor:pointer; z-index:10;
+  padding:8px 24px; box-shadow: 0 0 14px #ffd966b8;
+}
+#fullscreenCardDetails {
+  margin-top: 36px;
+}
+
+/* Large, readable styles for fullscreen card */
+#fullscreenCardDetails .card-title { font-size:2.2rem; color:#ffcc33; font-weight:800; margin-bottom:15px;}
+#fullscreenCardDetails .card-message { font-size:1.17rem; line-height:1.8; color:#fff; margin-bottom:28px;white-space:pre-wrap;}
+#fullscreenCardDetails .card-sender { font-size:1.1rem; color:#ffd700aa; border-top: 1px solid #ffd70055; margin-top:14px; padding-top:18px;}
 </style>
 </head>
 <body>
 <div class="app-view">
+  <div id="greetingModal" class="modal-bg" tabindex="-1">
+  <div class="fullscreen-card-popup">
+    <button class="close-btn" onclick="closeGreetingModal()">×</button>
+    <button class="create-yours-btn" onclick="window.location.href='https://greet-diwali.vercel.app/'">Create Yours</button>
+    <div id="fullscreenCardDetails"></div>
+  </div>
+</div>
   <div class="main-greeting">
     <header>
       <div class="emoji-bounce">🎆 ✨ 🎇</div>
@@ -380,18 +417,33 @@ function escapeHtml(text) {
 
 function loadCard() {
   const params = getParams();
+
   document.getElementById("pageTitle").textContent = `${params.title} 🎆`;
   document.querySelector('meta[property="og:title"]').setAttribute("content", params.title);
   document.querySelector('meta[property="og:description"]').setAttribute("content", params.message);
   document.querySelector('#ogImage').setAttribute("content", params.gif);
   document.querySelector('#twitterImage').setAttribute("content", params.gif);
+  
   document.getElementById("greeting").textContent = `A beautiful greeting from ${params.sender}`;
-  document.getElementById("gifContainer").innerHTML = params.gif ? `<img src="${params.gif}" alt="Diwali Greeting GIF" style="border-radius:12px; width:100%;">` : "";
-  document.getElementById("cardDetails").innerHTML = `
+  
+  document.getElementById("gifContainer").innerHTML = params.gif
+    ? `<img src="${params.gif}" alt="Diwali Greeting GIF" style="border-radius:12px; width:100%;">`
+    : "";
+
+  const cardDetails = document.getElementById("cardDetails");
+  cardDetails.innerHTML = `
     <div class="card-title">${escapeHtml(params.title)}</div>
     <div class="card-message">${escapeHtml(params.message)}</div>
     <div class="card-sender">— ${escapeHtml(params.sender)}</div>
-  `;
+  `;  
+  // Attach click handler here to support share scenarios
+  if (cardDetails) {
+    cardDetails.style.cursor = "pointer";
+    cardDetails.setAttribute("title", "View fullscreen");
+    // Remove previous, if present
+    cardDetails.onclick = null;
+    cardDetails.onclick = openGreetingModal;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -404,6 +456,47 @@ document.addEventListener("DOMContentLoaded", () => {
       if (popup) popup.focus();
     }
   }, 800);
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCard();
+
+  document.getElementById('greetingModal').addEventListener('click', function(e){
+    if(e.target === this) closeGreetingModal();
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(document.getElementById('greetingModal').classList.contains('active') && e.key==='Escape'){
+      closeGreetingModal();
+    }
+  });
+});
+  // Make greeting card clickable for fullscreen popup
+  const details = document.getElementById('cardDetails');
+  details.style.cursor = "pointer";
+  details.setAttribute("title", "View fullscreen");
+  details.addEventListener("click", openGreetingModal);
+
+  const modal = document.getElementById('greetingModal');
+  modal.addEventListener('click', function(e){
+    if(e.target === modal) closeGreetingModal();
+  });
+});
+
+function openGreetingModal() {
+  document.getElementById('fullscreenCardDetails').innerHTML = document.getElementById('cardDetails').innerHTML;
+  document.getElementById('greetingModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGreetingModal() {
+  document.getElementById('greetingModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('greetingModal').classList.contains('active') && e.key==='Escape'){
+    closeGreetingModal();
+  }
 });
 
 /* ---------------------------
